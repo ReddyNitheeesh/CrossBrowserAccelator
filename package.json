@@ -11,6 +11,10 @@
   "author": "Nitheesh Gaddam",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^21.2.0"
+    "electron": "^21.2.2"
+  },
+  "dependencies": {
+    "chromedriver": "^107.0.3",
+    "selenium-webdriver": "^4.5.0"
   }
 }
