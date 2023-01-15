@@ -20,7 +20,12 @@ window.addEventListener('click',(e)=>{
     if(elementId) {
         console.log(elementId);
         var chromeOptions = new chrome.Options();
-        chromeOptions.addArguments(`--load-extension=C:\\Manohar\\ExtensionClick`);
+        var loadExtension = '--load-extension=';
+        var globalRoot = require('path').resolve('./');
+        var myExtension = 'my_extension';
+        let result = loadExtension.concat(globalRoot, "\\", myExtension);
+        console.log(result);
+        chromeOptions.addArguments(result);
         let driver = new Builder()
         .forBrowser('chrome')
         .setChromeOptions(chromeOptions)
