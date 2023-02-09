@@ -5,6 +5,9 @@ const chrome = require('selenium-webdriver/chrome');
 const firefox = require('selenium-webdriver/firefox');
 const firefoxDriverPath = "C:\\Manohar\\CrossBowser\\CrossBrowserAccelator\\drivers\\geckodriver.exe";
 
+
+let driver
+
 async function getChromeDriver() {
     var chromeOptions = new chrome.Options();
         var loadExtension = '--load-extension=';
@@ -13,7 +16,7 @@ async function getChromeDriver() {
         let result = loadExtension.concat(globalRoot, "\\", myExtension);
 
         chromeOptions.addArguments(result);
-        let driver = new Builder()
+         driver = new Builder()
         .forBrowser('chrome')
         .setChromeOptions(chromeOptions)
         .build();
@@ -49,4 +52,12 @@ async function example(driver) {
     } finally {
         // await driver.quit();
     }
+}
+
+async function getStorage() {
+
+    let val = await driver.executeScript("return document.querySelector('crossbrowsertesting').innerHTML");
+    let obj = JSON.parse(val);
+    console.log(obj);
+        
 }
