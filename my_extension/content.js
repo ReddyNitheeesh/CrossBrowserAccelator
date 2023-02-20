@@ -33,6 +33,8 @@ function newProcessEvent(event) {
 	EventObject.timingsObject = performance.getEntriesByType('navigation')[0];
 	EventObject.tabUrl = document.URL;
 	EventObject.tabTitle = document.title;
+	EventObject.style = event.currentTarget.style;
+	
 
 	//go deeper into a nested image.
 	nestedImage = event.currentTarget.getElementsByTagName("img")[0];
