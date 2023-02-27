@@ -59,5 +59,15 @@ async function getStorage() {
     let val = await driver.executeScript("return document.querySelector('crossbrowsertesting').innerHTML");
     let obj = JSON.parse(val);
     console.log(obj);
+    await quitDriver()
         
+}
+
+async function quitDriver()
+{
+    if(driver != null){
+        await driver.quit()
+    }
+      
+
 }
