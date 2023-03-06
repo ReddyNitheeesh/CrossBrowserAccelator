@@ -1,6 +1,7 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const {Builder, By, Key, until, Browser, Options, WebDriver} = require('selenium-webdriver');
+const webdriver = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const firefox = require('selenium-webdriver/firefox');
 const firefoxDriverPath = "C:\\Manohar\\CrossBowser\\CrossBrowserAccelator\\drivers\\geckodriver.exe";
@@ -24,22 +25,17 @@ async function getChromeDriver() {
 }
 
 async function getFirefoxDriver() {
-    const capabilities = {
-            "moz:firefoxOptions": {
-              "binary": "C:\\Users\\Manohar_Gadepally\\AppData\\Local\\Mozilla Firefox\\firefox.exe"
-        }
-    }
-
     var firefoxOptions = new firefox.Options();
-    var loadExtension = '--install-extension=';
-    var globalRoot = require('path').resolve('./');
-    var myExtension = 'my_extension';
-    let result = loadExtension.concat(globalRoot, "\\", myExtension);
-    firefoxOptions.addArguments(result);
-    let driver = new Builder()
-        .withCapabilities(capabilities)
-        .forBrowser('firefox')
-        .build();
+        var loadExtension = '--load-extension=';
+        var globalRoot = require('path').resolve('./');
+        var myExtension = 'content.xpi';
+        let result = loadExtension.concat(globalRoot, "\\", myExtension);
+
+        firefoxOptions.addArguments(result);
+        firefoxOptions.setBinary('C:\\Program Files\\Mozilla Firefox\\firefox.exe');
+    const driver = new webdriver.Builder()
+    .forBrowser('firefox').setFirefoxOptions(firefoxOptions)
+    .build();
     example(driver);
 }
 
