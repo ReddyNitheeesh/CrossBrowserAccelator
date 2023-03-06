@@ -53,7 +53,10 @@ function newProcessEvent(event) {
 	console.log("element attributes", event.currentTarget.attributes);
 	attributes = event.currentTarget.attributes;
 
+
+	// let listOfAttributes = []
 	Array.prototype.slice.call(attributes).forEach(element=>{
+		// listOfAttributes.push(element.name + ' => '+ element.value);
 		if(element.name == 'value'){
 			element.value = event.currentTarget.value;
 		}
@@ -67,7 +70,8 @@ function newProcessEvent(event) {
     appendStorageArrayWithNewVal("Intial", EventObject);
     injectCode();
    
-    console.log("Data stored in object:",EventObject);
+    // console.log("Data stored in object:",EventObject);
+	// console.log("attributes of an element: ", listOfAttributes);
 }
 
 function checkcount(temp){
@@ -180,8 +184,8 @@ function injectCode() {
 				element.remove();
 			}
 			console.log("injecte code to browser");
-			document.documentElement.appendChild(script);	
-			// nullthrows(document.documentElement || document.head).appendChild(script);
+			// document.documentElement.appendChild(script);	
+		    nullthrows(document.documentElement || document.head).appendChild(script);
 			// ullthrows(document.head || document.documentElement).appendChild(script1);
 		
 		
