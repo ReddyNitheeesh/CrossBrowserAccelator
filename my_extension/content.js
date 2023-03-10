@@ -49,9 +49,27 @@ function newProcessEvent(event) {
 		EventObject.NestedImage_alt = "";
     }
 
+	console.log("element attributes", event.currentTarget.attributes);
+	attributes = event.currentTarget.attributes;
+
+
+	// let listOfAttributes = []
+	Array.prototype.slice.call(attributes).forEach(element=>{
+		// listOfAttributes.push(element.name + ' => '+ element.value);
+		if(element.name == 'value'){
+			element.value = event.currentTarget.value;
+		}
+		
+		let temp = `//*[@${element.name} = '${element.value}']`;
+		if(checkcount(temp)==1){
+		console.log(temp);
+		}
+	});
+	
     appendStorageArrayWithNewVal("Intial", EventObject);
     injectCode();
    
+	
     // console.log("Data stored in object:",EventObject);
 	// console.log("attributes of an element: ", listOfAttributes);
 }
