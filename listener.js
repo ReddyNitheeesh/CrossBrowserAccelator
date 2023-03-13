@@ -1,7 +1,6 @@
 const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const {Builder, By, Key, until, Browser, Options, WebDriver} = require('selenium-webdriver');
-const webdriver = require('selenium-webdriver');
 const chrome = require('selenium-webdriver/chrome');
 const firefox = require('selenium-webdriver/firefox');
 const firefoxDriverPath = "C:\\Manohar\\CrossBowser\\CrossBrowserAccelator\\drivers\\geckodriver.exe";
@@ -33,7 +32,7 @@ async function getFirefoxDriver() {
 
         firefoxOptions.addArguments(result);
         firefoxOptions.setBinary('C:\\Program Files\\Mozilla Firefox\\firefox.exe');
-    const driver = new webdriver.Builder()
+    const driver = new Webdriver.Builder()
     .forBrowser('firefox').setFirefoxOptions(firefoxOptions)
     .build();
     example(driver);
