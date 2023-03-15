@@ -24,22 +24,17 @@ async function getChromeDriver() {
 }
 
 async function getFirefoxDriver() {
-    const capabilities = {
-            "moz:firefoxOptions": {
-              "binary": "C:\\Users\\Manohar_Gadepally\\AppData\\Local\\Mozilla Firefox\\firefox.exe"
-        }
-    }
-
     var firefoxOptions = new firefox.Options();
-    var loadExtension = '--install-extension=';
-    var globalRoot = require('path').resolve('./');
-    var myExtension = 'my_extension';
-    let result = loadExtension.concat(globalRoot, "\\", myExtension);
-    firefoxOptions.addArguments(result);
-    let driver = new Builder()
-        .withCapabilities(capabilities)
-        .forBrowser('firefox')
-        .build();
+        var loadExtension = '--load-extension=';
+        var globalRoot = require('path').resolve('./');
+        var myExtension = 'content.xpi';
+        let result = loadExtension.concat(globalRoot, "\\", myExtension);
+
+        firefoxOptions.addArguments(result);
+        firefoxOptions.setBinary('C:\\Program Files\\Mozilla Firefox\\firefox.exe');
+    const driver = new Webdriver.Builder()
+    .forBrowser('firefox').setFirefoxOptions(firefoxOptions)
+    .build();
     example(driver);
 }
 

@@ -2,6 +2,10 @@
 // import { saveToStorage } from './background.js';
 let myObject =[];
 
+if (typeof browser === "undefined") {
+    var browser = chrome;
+}
+
 setUpHooks();
 
 var observer = new MutationObserver(function (mutations) {
@@ -45,14 +49,38 @@ function newProcessEvent(event) {
 		EventObject.NestedImage_alt = "";
     }
 
+	console.log("element attributes", event.currentTarget.attributes);
+	attributes = event.currentTarget.attributes;
+
+
+	// let listOfAttributes = []
+	Array.prototype.slice.call(attributes).forEach(element=>{
+		// listOfAttributes.push(element.name + ' => '+ element.value);
+		if(element.name == 'value'){
+			element.value = event.currentTarget.value;
+		}
+		
+		let temp = `//*[@${element.name} = '${element.value}']`;
+		if(checkcount(temp)==1){
+		console.log(temp);
+		}
+	});
+	
     appendStorageArrayWithNewVal("Intial", EventObject);
     injectCode();
    
-    // console.log("Data stored in object:",myObject);
+	
+    // console.log("Data stored in object:",EventObject);
+	// console.log("attributes of an element: ", listOfAttributes);
+}
+
+function checkcount(temp){
+	let count = document.evaluate(`count(${temp})`,document,null,XPathResult.ANY_TYPE,null).numberValue;
+	return count;
 }
 
 function setUpHooks() {
-	
+	console.log("setup hook");
     //configured for most web pages
     //clickable items
     configureListener('click', 'a');
@@ -76,7 +104,7 @@ function configureListener(listenerType, tag) {
 function GetFromStorage(key)
 {
     return new Promise(function (resolve, reject) {
-		chrome.storage.local.get([key], function (data) {
+		browser.storage.local.get([key], function (data) {
 			if(Array.isArray(data[key])){
 				//console.log('Storage debug :: Read array :: ' + key + ' :: size: ' + data[key].length);
 			}
@@ -84,8 +112,6 @@ function GetFromStorage(key)
 		});
 	});
 }
-
-
 
 //helper to append to a storage value
 function appendStorageArray(key, val) {
@@ -111,10 +137,14 @@ function appendStorageArrayWithNewVal(key,val)
 }
 
 function saveToStorage(key, val) {
-	chrome.storage.local.set({ [key] : val }, function () {
-		// if(Array.isArray(val)){
-		// 	//console.log('Storage debug :: Save array :: ' + key + ' :: save size: ' + val.length);
-		// }
+	// browser.storage.local.set({ [key] : val });
+
+	
+	browser.storage.local.set({ [key] : val }, function () {
+		console.log(val["Intial"]);
+		if(Array.isArray(val)){
+			console.log('Storage debug :: Save array :: ' + key + ' :: save size: ' + val["Intial"].length);
+		}
 	});
 }
 function clearStorageArrays(){
@@ -135,6 +165,7 @@ const nullthrows = (v) => {
 function injectCode() {
 
 	GetFromStorage("Intial").then(function(val) {
+		console.log(val);
         if(val !== undefined){
 			
 			// const script1 = document.createElement('Mahesh');
@@ -152,9 +183,9 @@ function injectCode() {
 			{
 				element.remove();
 			}
-			
-					
-			nullthrows(document.head || document.documentElement).appendChild(script);
+			console.log("injecte code to browser");
+			// document.documentElement.appendChild(script);	
+		    nullthrows(document.documentElement || document.head).appendChild(script);
 			// ullthrows(document.head || document.documentElement).appendChild(script1);
 		
 		
