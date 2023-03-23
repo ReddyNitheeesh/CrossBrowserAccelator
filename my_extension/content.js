@@ -38,6 +38,14 @@ function newProcessEvent(event) {
 	EventObject.tabUrl = document.URL;
 	EventObject.tabTitle = document.title;
 
+	// Adding necessary css properties
+	var cssProperties = getCssProperties(EventObject);
+	const cssAtributes = ["background", "border", "color", "fontFamily", "height", "visibility", "width"];
+	for(var i=0; i<cssAtributes.length; i++) {
+		property = cssAtributes[i];
+		EventObject[property] = cssProperties[property];
+	}
+
 	//go deeper into a nested image.
 	nestedImage = event.currentTarget.getElementsByTagName("img")[0];
 	if (nestedImage != undefined) {
@@ -72,6 +80,16 @@ function newProcessEvent(event) {
 	
     // console.log("Data stored in object:",EventObject);
 	// console.log("attributes of an element: ", listOfAttributes);
+}
+
+function getCssProperties(EventObject) {
+	if(EventObject.className) {
+		var elementIdentifier = '.'.concat(EventObject.className);
+	}
+	else if(EventObject.id) {
+		var elementIdentifier = '#'.concat(EventObject.id);
+	}
+	return getComputedStyle(document.querySelector(elementIdentifier));
 }
 
 function checkcount(temp){
@@ -187,16 +205,10 @@ function injectCode() {
 			// document.documentElement.appendChild(script);	
 		    nullthrows(document.documentElement || document.head).appendChild(script);
 			// ullthrows(document.head || document.documentElement).appendChild(script1);
-		
-		
 			// console.log("Data stored in object:",val);
-		
 		}
 	});
     
 }
 
 injectCode();
-
-
-
