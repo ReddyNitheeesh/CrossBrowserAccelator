@@ -23,7 +23,7 @@ observer.observe(document.body, config);
 
 function newProcessEvent(event) {
 	//everything we want to store from 	the event
-	
+	//console.log("Type of listener event", event.type);
 	let EventObject = {};
 	EventObject.type = event.type;
 	EventObject.tagName = event.currentTarget.tagName
@@ -37,6 +37,7 @@ function newProcessEvent(event) {
 	EventObject.timingsObject = performance.getEntriesByType('navigation')[0];
 	EventObject.tabUrl = document.URL;
 	EventObject.tabTitle = document.title;
+	EventObject.operation = event.type;
 
 	// Adding necessary css properties
 	var cssProperties = getCssProperties(EventObject);
@@ -61,7 +62,7 @@ function newProcessEvent(event) {
 	attributes = event.currentTarget.attributes;
 
 
-	// let listOfAttributes = []
+	let listOfAttributes = []
 	Array.prototype.slice.call(attributes).forEach(element=>{
 		// listOfAttributes.push(element.name + ' => '+ element.value);
 		if(element.name == 'value'){
@@ -70,10 +71,12 @@ function newProcessEvent(event) {
 		
 		let temp = `//*[@${element.name} = '${element.value}']`;
 		if(checkcount(temp)==1){
-		console.log(temp);
+		listOfAttributes.push(temp);
 		}
 	});
 	
+	EventObject.locatorList = listOfAttributes;
+
     appendStorageArrayWithNewVal("Intial", EventObject);
     injectCode();
    
